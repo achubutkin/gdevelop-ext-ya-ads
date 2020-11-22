@@ -9,12 +9,6 @@
 
 ### Установка
 
-Yandex SDK подключить в index.html ДО кода игры и проверить, что SDK доступен глобально -> window.ysdk.
-```
-<!-- Yandex Games SDK -->
-<script src="https://yandex.ru/games/sdk/v1"></script>
-```
-
 Загрузить файл расширения по ссылке https://raw.githubusercontent.com/achubutkin/gdevelop-ext-ya-ads/main/Extension.json. Открыть проект игры в GDevelop. Перейти к списку расширений в панели проекта (справа), затем перейти к поиску расширений. 
 
 ![j](https://raw.githubusercontent.com/achubutkin/gdevelop-ext-ya-ads/main/01.png)
@@ -23,13 +17,17 @@ Yandex SDK подключить в index.html ДО кода игры и пров
 
 ![j](https://raw.githubusercontent.com/achubutkin/gdevelop-ext-ya-ads/main/02.png)
 
-В списке расширений в панели проекта, отобразится расширение YaAds.
+В списке расширений в панели проекта, отобразится расширение YandexGamesSDK.
 
 ![j](https://raw.githubusercontent.com/achubutkin/gdevelop-ext-ya-ads/main/03.png)
 
-В списке событий добавить новое событие и найти расширение YaAds используя поиск по событиям. Описание и схема работы каждого события отображается слева.
+Для инициализации SDK необходимо при старте сцены вызвать действие Init SDK. После успешной инициализации и загрузки SDK в переменные сцены добавится числовая переменная со значением 1 (см. демо с игрой). В списке событий добавить новое событие и найти расширение YandexGamesSDK используя поиск по событиям. Описание и схема работы каждого события отображается справа.
 
 ![j](https://raw.githubusercontent.com/achubutkin/gdevelop-ext-ya-ads/main/04.png)
+
+### Демо
+
+Демо игры с инициализацией плагина и вызовом полноэкранного баннера и видео с вознаграждением и начислением монет https://github.com/achubutkin/gdevelop-ext-ya-ads/blob/main/demo_kenney_yasdk.zip?raw=true
 
 License
 ----
