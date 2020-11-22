@@ -1,94 +1,13 @@
 {
   "author": "https://github.com/achubutkin/gdevelop-ext-ya-ads",
-  "description": "Yandex SDK добавить в index.html ДО кода игры и проверить, что доступен глобально -> window.ysdk.",
+  "description": "Расширение предоставляет следующие возможности:\nинтеграция показа рекламы (полноэкранный баннер, реклама с вознаграждением);\nавтоматический переход в полноэкранный режим;\nзадание ориентации экрана при начале игры;\n",
   "extensionNamespace": "",
-  "fullName": "YaAds",
-  "name": "YaAds",
-  "shortDescription": "",
-  "tags": "",
-  "version": "",
+  "fullName": "Yandex.Games SDK",
+  "name": "YandexGamesSDK",
+  "shortDescription": "Расширение для подключения SDK Яндекс.Игр. ",
+  "tags": "ad, ads, advertising, yandex, ya, sdk",
+  "version": "1.0.0",
   "eventsFunctions": [
-    {
-      "description": "Log",
-      "fullName": "Log",
-      "functionType": "Action",
-      "name": "log",
-      "sentence": "Log _PARAM1_",
-      "events": [
-        {
-          "disabled": false,
-          "folded": false,
-          "type": "BuiltinCommonInstructions::Standard",
-          "conditions": [],
-          "actions": [
-            {
-              "type": {
-                "inverted": false,
-                "value": "ModVarSceneTxt"
-              },
-              "parameters": [
-                "output",
-                "=",
-                "GetArgumentAsString(\"output\")"
-              ],
-              "subInstructions": []
-            }
-          ],
-          "events": []
-        },
-        {
-          "disabled": false,
-          "folded": false,
-          "type": "BuiltinCommonInstructions::JsCode",
-          "inlineCode": "console.log(runtimeScene.getVariables().get(\"output\").getAsString());",
-          "parameterObjects": "",
-          "useStrict": true
-        }
-      ],
-      "parameters": [
-        {
-          "codeOnly": false,
-          "defaultValue": "",
-          "description": "Output",
-          "longDescription": "",
-          "name": "output",
-          "optional": false,
-          "supplementaryInformation": "",
-          "type": "string"
-        }
-      ],
-      "objectGroups": []
-    },
-    {
-      "description": "",
-      "fullName": "Log Object",
-      "functionType": "Action",
-      "name": "logObject",
-      "sentence": "Log _PARAM1_",
-      "events": [
-        {
-          "disabled": false,
-          "folded": false,
-          "type": "BuiltinCommonInstructions::JsCode",
-          "inlineCode": "console.log(runtimeScene);\n",
-          "parameterObjects": "",
-          "useStrict": true
-        }
-      ],
-      "parameters": [
-        {
-          "codeOnly": false,
-          "defaultValue": "",
-          "description": "Object",
-          "longDescription": "",
-          "name": "",
-          "optional": false,
-          "supplementaryInformation": "",
-          "type": "objectList"
-        }
-      ],
-      "objectGroups": []
-    },
     {
       "description": "Показать полноэкранный рекламный баннер. Частота вызова не контролируется, при частом вызове, SDK вызывает ошибку и отображает ее в консоли браузера, без прерывания игрового процесса.",
       "fullName": "Ads Fullscreen",
@@ -100,7 +19,7 @@
           "disabled": false,
           "folded": false,
           "type": "BuiltinCommonInstructions::JsCode",
-          "inlineCode": "console.log('Ads Fullsreen');\n\ntry {\n    ysdk.adv.showFullscreenAdv({\n            callbacks: {\n        onClose: function(wasShown) {\n            console.log(\"OK\");\n        },\n            onError: function(error) {\n                console.log(error);\n        }\n    }\n    });\n} \ncatch (err) {\n    console.log(err);\n};",
+          "inlineCode": "try {\n    ysdk.adv.showFullscreenAdv({\n            callbacks: {\n        onClose: function(wasShown) {\n        },\n            onError: function(error) {\n                console.log(error);\n        }\n    }\n    });\n} \ncatch (err) {\n    console.log(err);\n};",
           "parameterObjects": "",
           "useStrict": true
         }
@@ -109,7 +28,7 @@
       "objectGroups": []
     },
     {
-      "description": "Показать рекламный баннер с вознаграждением за просмотр. Частота вызова не контролируется, при частом вызове, SDK вызывает ошибку и отображает ее в консоли браузера, без прерывания игрового процесса. Вызов устанавливает СТРОКОВУЮ переменную СЦЕНЫ с одним из значений: rewarded - игрок досмотрел рекламу до конца и может быть вознагражден, closed - игрок не досмотрел рекламу до конца и не может быть вознагражден, error - при вызове рекламного блока произошла ошибка.",
+      "description": "Показать рекламный баннер с вознаграждением за просмотр. Частота вызова не контролируется, при частом вызове, SDK вызывает ошибку и отображает ее в консоли браузера, без прерывания игрового процесса. Вызов устанавливает СТРОКОВУЮ переменную СЦЕНЫ YaAds_adsRewardedResult с одним из значений: rewarded - игрок досмотрел рекламу до конца и может быть вознагражден, closed - игрок не досмотрел рекламу до конца и не может быть вознагражден, error - при вызове рекламного блока произошла ошибка.",
       "fullName": "Ads Rewarded",
       "functionType": "Action",
       "name": "adsRewarded",
@@ -119,12 +38,62 @@
           "disabled": false,
           "folded": false,
           "type": "BuiltinCommonInstructions::JsCode",
-          "inlineCode": "console.log('Ads Rewarded');\n\ntry {\n    ysdk.adv.showRewardedVideo({\n        callbacks: {\n            onOpen: () => {\n                console.log('Video ad open.');\n            },\n            onRewarded: () => {\n                console.log('Rewarded!');\n                runtimeScene._variables.add(\"ads_reward_result\", new gdjs.Variable({ value: \"rewarded\" }));\n            },\n            onClose: () => {\n                console.log('Video ad closed.');\n                runtimeScene._variables.add(\"ads_reward_result\", new gdjs.Variable({ value: \"closed\" }));\n            }, \n            onError: (e) => {\n                runtimeScene._variables.add(\"ads_reward_result\", new gdjs.Variable({ value: \"error\" }));\n            }\n        }\n    });\n} \ncatch (err) {\n    console.log(err);\n};",
+          "inlineCode": "var varResultName = \"YaGamesSDK_adsRewardedResult\";\ntry {\n    ysdk.adv.showRewardedVideo({\n        callbacks: {\n            onOpen: () => {\n            },\n            onRewarded: () => {\n                runtimeScene._variables.add(varResultName, new gdjs.Variable({ value: \"rewarded\" }));\n            },\n            onClose: () => {\n                runtimeScene._variables.add(varResultName, new gdjs.Variable({ value: \"closed\" }));\n            }, \n            onError: (e) => {\n                runtimeScene._variables.add(varResultName, new gdjs.Variable({ value: \"error\" }));\n            }\n        }\n    });\n} \ncatch (err) {\n    console.log(err);\n};",
           "parameterObjects": "",
           "useStrict": true
         }
       ],
       "parameters": [],
+      "objectGroups": []
+    },
+    {
+      "description": "Инициализация SDK перед началом работы. Вызов устанавливает ЧИСЛОВУЮ переменную СЦЕНЫ YaGamesSDK_sdkInitResult  с одним из значений: 0 - SDK не инициализирована, 1 - SDK инициализирована.",
+      "fullName": "Init SDK",
+      "functionType": "Action",
+      "name": "sdkInit",
+      "sentence": "Инициализация YaAds SDK с параметрами _PARAM1_, _PARAM2_, _PARAM3_",
+      "events": [
+        {
+          "disabled": false,
+          "folded": false,
+          "type": "BuiltinCommonInstructions::JsCode",
+          "inlineCode": "var options = {\r\n    fullscreen: eventsFunctionContext.getArgument(\"fullscreen\") || 1,\r\n    orientation: {\r\n        value: eventsFunctionContext.getArgument(\"orientation\") || \"portrait\",\r\n        lock: eventsFunctionContext.getArgument(\"lock\") || 0\r\n    }\r\n};\r\n(function(d, s, id) {\r\n    var js,\r\n    fjs = d.getElementsByTagName(s)[0];\r\n    if (d.getElementById(id)) return;\r\n    js = d.createElement(s);\r\n    js.id = id;\r\n    js.src = \"https://yandex.ru/games/sdk/v2\";\r\n    js.onload = function () {\r\n        YaGames\r\n            .init(options)\r\n            .then(ysdk => {\r\n                window[\"ysdk\"] = ysdk;\r\n                runtimeScene._variables.add(\"YaGamesSDK_sdkInitResult\", new gdjs.Variable({ value: 1 }));\r\n            });\r\n    };\r\n    fjs.parentNode.insertBefore(js, fjs);\r\n})(document, \"script\", \"yagames-jssdk\");",
+          "parameterObjects": "",
+          "useStrict": true
+        }
+      ],
+      "parameters": [
+        {
+          "codeOnly": false,
+          "defaultValue": "",
+          "description": "Fullscreen",
+          "longDescription": "A sign of switching to full-screen mode when opening a game or on the first user action.",
+          "name": "fullscreen",
+          "optional": false,
+          "supplementaryInformation": "",
+          "type": "expression"
+        },
+        {
+          "codeOnly": false,
+          "defaultValue": "",
+          "description": "Orientation",
+          "longDescription": "Screen orientation. Possible values: portrait or landscape.",
+          "name": "orientation",
+          "optional": false,
+          "supplementaryInformation": "",
+          "type": "string"
+        },
+        {
+          "codeOnly": false,
+          "defaultValue": "",
+          "description": "Lock",
+          "longDescription": "Screen rotation lock sign.",
+          "name": "lock",
+          "optional": false,
+          "supplementaryInformation": "",
+          "type": "expression"
+        }
+      ],
       "objectGroups": []
     }
   ],
